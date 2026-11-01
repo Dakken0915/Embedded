@@ -4,7 +4,7 @@ title: USB 驱动与 URB
 
 # USB 驱动与 URB
 
-本文以 Linux 6.6 主机侧 API 为基准。USB 用户态访问另见 [libusb 设备访问](../Linux应用/libusb设备访问.md)。
+本文以 Linux 6.6 主机侧 API 为基准。USB 用户态访问另见 [libusb 设备访问](../../Linux应用/libusb设备访问.md)。
 
 ## 总线、枚举与描述符
 

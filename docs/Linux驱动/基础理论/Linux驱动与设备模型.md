@@ -150,7 +150,7 @@ VMA 描述进程虚拟地址区域及其权限等属性。缺页处理可能建�
 ## 分专题接口
 
 - [字符设备与 I/O 模型](./字符设备与IO模型.md)：设备号、cdev、file_operations、用户复制与 poll。
-- [设备树与 Platform 驱动](./设备树与Platform.md)：节点、资源、匹配、probe 和退出。
+- [设备树与 Platform 驱动](../平台基础/设备树与Platform.md)：节点、资源、匹配、probe 和退出。
 - [内核内存与地址映射](./内核内存与地址映射.md)、[中断处理](./中断处理.md)、[同步与互斥](./同步与互斥.md)。
-- [GPIO](./GPIO子系统.md)、[Pinctrl](./Pinctrl子系统.md)、[I2C](./I2C驱动.md)、[Input](./Input子系统.md)、[USB](./USB驱动.md)。
-- [LCD 与 Framebuffer](./LCD与Framebuffer.md)、[V4L2 与 videobuf2](./V4L2驱动.md)。
+- [GPIO](../底层引脚与时钟/GPIO子系统.md)、[Pinctrl](../底层引脚与时钟/Pinctrl子系统.md)、[I2C](../总线与外设子系统/I2C驱动.md)、[Input](../总线与外设子系统/Input子系统.md)、[USB](../总线与外设子系统/USB驱动.md)。
+- [LCD 与 Framebuffer](../多媒体驱动/LCD与Framebuffer.md)、[V4L2 与 videobuf2](../多媒体驱动/V4L2驱动.md)。

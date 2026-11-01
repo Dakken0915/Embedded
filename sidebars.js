@@ -47,6 +47,7 @@ const sidebars = {
       label: 'Linux 应用',
       items: [
         'Linux应用/进程线程与系统调用',
+        'Linux应用/错误代码速查',
         'Linux应用/线程控制',
         'Linux应用/Linux内存管理',
         'Linux应用/程序调试与故障定位',
@@ -58,20 +59,53 @@ const sidebars = {
       type: 'category',
       label: 'Linux 驱动',
       items: [
-        'Linux驱动/Linux驱动与设备模型',
-        'Linux驱动/字符设备与IO模型',
-        'Linux驱动/设备树与Platform',
-        'Linux驱动/内核内存与地址映射',
-        'Linux驱动/中断处理',
-        'Linux驱动/同步与互斥',
-        'Linux驱动/GPIO子系统',
-        'Linux驱动/Pinctrl子系统',
-        'Linux驱动/I2C驱动',
-        'Linux驱动/Input子系统',
-        'Linux驱动/USB驱动',
-        'Linux驱动/LCD与Framebuffer',
-        'Linux驱动/V4L2驱动',
-        'Linux驱动/Linux内核日志',
+        {
+          type: 'category',
+          label: '基础理论',
+          items: [
+            'Linux驱动/基础理论/Linux驱动与设备模型',
+            'Linux驱动/基础理论/字符设备与IO模型',
+            'Linux驱动/基础理论/内核内存与地址映射',
+            'Linux驱动/基础理论/同步与互斥',
+            'Linux驱动/基础理论/中断处理',
+          ],
+        },
+        {
+          type: 'category',
+          label: '平台基础',
+          items: ['Linux驱动/平台基础/设备树与Platform'],
+        },
+        {
+          type: 'category',
+          label: '底层引脚与时钟',
+          items: [
+            'Linux驱动/底层引脚与时钟/CLK',
+            'Linux驱动/底层引脚与时钟/GPIO子系统',
+            'Linux驱动/底层引脚与时钟/Pinctrl子系统',
+          ],
+        },
+        {
+          type: 'category',
+          label: '总线与外设子系统',
+          items: [
+            'Linux驱动/总线与外设子系统/I2C驱动',
+            'Linux驱动/总线与外设子系统/Input子系统',
+            'Linux驱动/总线与外设子系统/USB驱动',
+          ],
+        },
+        {
+          type: 'category',
+          label: '多媒体驱动',
+          items: [
+            'Linux驱动/多媒体驱动/LCD与Framebuffer',
+            'Linux驱动/多媒体驱动/V4L2驱动',
+          ],
+        },
+        {
+          type: 'category',
+          label: '调试工具',
+          items: ['Linux驱动/调试工具/Linux内核日志'],
+        },
       ],
     },
     {

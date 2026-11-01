@@ -134,4 +134,4 @@ cc -std=c11 -Wall -Wextra -Werror usb_rx.c -o usb_rx $(pkg-config --cflags --lib
 
 Boot 键盘常见输入含 modifier、保留字节与 6 个 usage，modifier 各位表示左右 Ctrl/Shift/Alt/GUI；鼠标的位移位宽、符号及 Report ID 依 Report Descriptor。通用鼠标不能固定解析为“8 字节且 X/Y 一定为某个偏移”。
 
-HID `SET_REPORT` 的 `wValue` 高字节是 Report Type，低字节是 Report ID；2 表示 Output Report，不能解释成方向。`wIndex` 为目标接口，`bmRequestType` 决定方向/类型/接收者。键盘 LED 位图也须与该报告描述符一致。内核侧模型见 [USB 驱动](../Linux驱动/USB驱动.md)。
+HID `SET_REPORT` 的 `wValue` 高字节是 Report Type，低字节是 Report ID；2 表示 Output Report，不能解释成方向。`wIndex` 为目标接口，`bmRequestType` 决定方向/类型/接收者。键盘 LED 位图也须与该报告描述符一致。内核侧模型见 [USB 驱动](../Linux驱动/总线与外设子系统/USB驱动.md)。
