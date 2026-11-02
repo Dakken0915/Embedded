@@ -83,4 +83,35 @@ SVC_Handler:
 
 故障记录应先保留原始栈帧和状态寄存器，再进行耗时输出。CFSR 的有效位决定 MMFAR/BFAR 是否可用；堆栈错误时不能继续假定原 SP 指向可安全解引用的完整帧。PC 和 LR 可结合 ELF 符号与反汇编定位指令，但非法跳转可能使它们本身不可信。
 
+### HardFault 定位流程
+
+以下以具有相应故障寄存器的 Cortex-M3/M4/M7 为范围；M0/M0+ 和带安全扩展的内核需按对应手册调整，不能读取不存在的寄存器。
+
+1. 在处理程序入口或故障记录中取得异常入口 LR（EXC_RETURN）、原始 MSP/PSP、HFSR 与 CFSR。HFSR 的 FORCED 表示可能有可配置故障升级为 HardFault，应继续检查 CFSR；不要先清除状态位或重启覆盖现场。
+2. 根据 EXC_RETURN 判断异常前所用栈、基本/浮点扩展帧，并检查入栈/出栈错误和栈边界，再读取被打断现场的 PC、LR 与 xPSR。处理程序内的当前 PC/LR 不等于任务出错时的 PC/LR，普通 C 函数序言也可能已经改变 MSP。
+3. 结合 CFSR 区分访问权限、总线、非法指令、无效状态等故障；MMARVALID/BFARVALID 置位时才解释相应地址。精确访问故障通常可以结合堆栈 PC 查看指令和操作数；非精确总线故障的 PC 可能晚于真正错误指令。
+4. 使用同一次构建的 ELF、符号和反汇编定位源码，检查相关指针、返回地址、任务栈高水位和越界写。FreeRTOS 中还需核对 ISR 调用 API 的优先级限制、任务栈与 TCB 是否已被破坏，不能只凭故障名认定栈溢出。
+
+例如，主机安装 Arm GNU 工具链后，可将已确认的故障地址替换到以下命令；`0x08001234` 只是占位地址，不能作为所有固件的固定位置：
+
+```bash
+arm-none-eabi-addr2line -e firmware.elf -f -C 0x08001234
+arm-none-eabi-objdump -dS firmware.elf
+```
+
+源代码优化、内联及损坏的返回链都可能影响定位。故障处理路径避免调用可能拿锁、分配内存或阻塞的 printf/RTOS 服务；通常先写入预留的固定记录区，再选择受控停机或复位。若使用保留 RAM 跨复位读取，还需由链接脚本、启动代码和芯片复位域共同保证不被清零；不应默认从 HardFault 直接返回便能恢复正常。寄存器布局和访问接口见 [CMSIS SCB](https://arm-software.github.io/CMSIS_6/latest/Core/structSCB__Type.html) 与 [内核寄存器访问](https://arm-software.github.io/CMSIS_6/latest/Core/group__Core__Register__gr.html)。
+
+### “无损调试”与低干扰观测
+
+若“无损”指保持原始故障信息，应在修改寄存器、清除故障位或复位之前保存现场；若指不暂停正常运行，则通常是低干扰观测，不能保证零时间开销、零带宽限制且绝不丢数据。
+
+| 方式 | 能力与限制 |
+| --- | --- |
+| SWD/JTAG 断点、DWT 数据观察点 | 适合检查故障现场或捕获越界写；触发停机会改变任务、中断和外设的时间关系 |
+| GPIO 翻转与逻辑分析仪 | 可观测延迟和时序，占用引脚并增加少量指令/总线访问 |
+| ITM/SWO、可用的 ETM 跟踪 | 输出事件或指令轨迹，依赖芯片、引脚、探针和带宽；并非全部 Cortex-M 都支持 |
+| RTT 或内存环形记录 | 可在运行期间提取数据，仍消耗 CPU、RAM 和总线资源；阻塞模式可能等待，非阻塞模式缓冲满时可能丢弃 |
+
+记录应限制长度与频率，并在多生产者场景处理并发。故障路径需要独立、可用的存储和尽可能少的依赖；没有连接调试器时，不要无条件执行可能再次引发异常的 BKPT。RTT 的缓冲与运行模式见 [SEGGER RTT 文档](https://www.segger.com/products/debug-probes/j-link/technology/about-real-time-transfer/)。
+
 Cortex-M3 与 Cortex-M7 都不能简单按桌面乱序处理器模型解释。M7 常有更复杂流水线、Cache、TCM 和可选浮点支持，M3 的典型存储与执行结构不同；具体性能、异常与 Cache 行为须按芯片实现判断。

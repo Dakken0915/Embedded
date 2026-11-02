@@ -15,10 +15,11 @@ const sidebars = {
           link: { type: 'doc', id: '语言与构建/C语言/概述' },
           items: [
             '语言与构建/C语言/对象存储与编译链接',
+            '语言与构建/C语言/内存管理',
             '语言与构建/C语言/指针数组与复合类型',
             '语言与构建/C语言/函数参数与回调',
             '语言与构建/C语言/标准库与字符串',
-            '语言与构建/C语言/数值表示与运算',
+            '语言与构建/C语言/C语言基础语法考点',
           ],
         },
         {
@@ -27,6 +28,7 @@ const sidebars = {
           link: { type: 'doc', id: '语言与构建/C++语言/概述' },
           items: [
             '语言与构建/C++语言/类与对象',
+            '语言与构建/C++语言/浅拷贝与深拷贝',
             '语言与构建/C++语言/函数与参数',
             '语言与构建/C++语言/模板与泛型',
             '语言与构建/C++语言/现代语言特性',
@@ -46,13 +48,15 @@ const sidebars = {
       type: 'category',
       label: 'Linux 应用',
       items: [
-        'Linux应用/进程线程与系统调用',
+        'Linux应用/系统调用',
         'Linux应用/错误代码速查',
         'Linux应用/线程控制',
         'Linux应用/Linux内存管理',
+        'Linux应用/CPU缓存',
         'Linux应用/程序调试与故障定位',
         'Linux应用/V4L2视频采集',
         'Linux应用/libusb设备访问',
+        'Linux应用/IPC',
       ],
     },
     {
@@ -67,8 +71,12 @@ const sidebars = {
             'Linux驱动/基础理论/字符设备与IO模型',
             'Linux驱动/基础理论/内核内存与地址映射',
             'Linux驱动/基础理论/同步与互斥',
-            'Linux驱动/基础理论/中断处理',
           ],
+        },
+        {
+          type: 'category',
+          label: '中断机制',
+          items: ['Linux驱动/中断机制/中断处理'],
         },
         {
           type: 'category',
@@ -188,6 +196,7 @@ const sidebars = {
       label: '网络与通信',
       items: [
         '网络与通信/Socket与IO模型',
+        '网络与通信/多连接处理',
         '网络与通信/AT指令与链路状态机',
         '网络与通信/MQTT与Modbus',
       ],
