@@ -104,7 +104,7 @@ for(auto it = range.first; it != range.second; it++){}
 
 ## 二叉树基础结构
 
-```c++
+```cpp
 // 二叉树节点结构
 typedef struct TreeNode {
     int val;
@@ -134,17 +134,17 @@ void freeTree(TreeNode* root) {
 
 ### 递归序
 
-```c++
+```cpp
 // 递归序演示：每个节点会被访问3次
 void recursiveOrder(TreeNode* node) {
     if (!node) return;
     // 第1次到达节点
     printf("第1次到达: %d\n", node->val);
-    
+
     recursiveOrder(node->left);
     // 第2次到达节点（左子树返回后）
     printf("第2次到达: %d\n", node->val);
-    
+
     recursiveOrder(node->right);
     // 第3次到达节点（右子树返回后）
     printf("第3次到达: %d\n", node->val);
@@ -161,7 +161,7 @@ void recursiveOrder(TreeNode* node) {
 
 #### 递归实现：
 
-```c++
+```cpp
 // 前序遍历：根→左→右
 void preorderRecur(TreeNode* root) {
     if (!root) return;
@@ -191,19 +191,19 @@ void postorderRecur(TreeNode* root) {
 
 **迭代**：用**循环 + 容器（栈 / 队列 / 数组）** 手动重复执行逻辑，靠循环条件终止流程，不调用自身。
 
-```c++
+```cpp
 // 前序遍历：用栈，先压右再压左
 void preorderIter(TreeNode* root) {
     if (!root) return;
-    
+
     TreeNode* stack[1000];
     int top = -1;
     stack[++top] = root;
-    
+
     while (top >= 0) {
         TreeNode* node = stack[top--];
         printf("%d ", node->val);
-        
+
         // 先压右，再压左（保证左子树先出栈）
         if (node->right) stack[++top] = node->right;
         if (node->left) stack[++top] = node->left;
@@ -215,16 +215,16 @@ void inorderIter(TreeNode* root) {
     TreeNode* stack[1000];
     int top = -1;
     TreeNode* cur = root;
-    
+
     while (top >= 0 || cur) {
         while (cur) {      	// 一路向左，压入栈
             stack[++top] = cur;
             cur = cur->left;
         }
-        
+
         cur = stack[top--]; // 弹出并访问
         printf("%d ", cur->val);
-        
+
         cur = cur->right;   // 转向右子树
     }
 }
@@ -232,22 +232,22 @@ void inorderIter(TreeNode* root) {
 // 后序遍历：用两个栈，或"根右左"反转
 void postorderIter(TreeNode* root) {
     if (!root) return;
-    
+
     TreeNode* stack1[1000];
     TreeNode* stack2[1000];
     int top1 = -1, top2 = -1;
-    
+
     stack1[++top1] = root;
-    
+
     // 第一个栈做"根右左"遍历
     while (top1 >= 0) {
         TreeNode* node = stack1[top1--];
         stack2[++top2] = node;  // 压入第二个栈
-        
+
         if (node->left) stack1[++top1] = node->left;
         if (node->right) stack1[++top1] = node->right;
     }
-    
+
     // 弹出第二个栈就是"左右根"
     while (top2 >= 0) {
         TreeNode* node = stack2[top2--];
@@ -258,7 +258,7 @@ void postorderIter(TreeNode* root) {
 
 ####  层序遍历（BFS）
 
-```c++
+```cpp
 // 简单队列实现
 typedef struct {
     TreeNode* data[1000];
@@ -285,18 +285,18 @@ TreeNode* dequeue(Queue* q) {
 // 层序遍历：按层输出
 void levelOrder(TreeNode* root) {
     if (!root) return;
-    
+
     Queue q;
     initQueue(&q);
     enqueue(&q, root);
-    
+
     while (!isEmpty(&q)) {
         int levelSize = q.rear - q.front;  // 当前层节点数
-        
+
         for (int i = 0; i < levelSize; i++) {
             TreeNode* node = dequeue(&q);
             printf("%d ", node->val);
-            
+
             if (node->left) enqueue(&q, node->left);
             if (node->right) enqueue(&q, node->right);
         }
@@ -329,7 +329,7 @@ void levelOrder(TreeNode* root) {
 
 ### 递归实现（先序遍历）
 
-```c++
+```cpp
 void dfs(TreeNode* root) {
     if (root == nullptr) return;
     cout << root->val << " ";   // 处理当前节点
@@ -350,21 +350,21 @@ void dfs(TreeNode* root) {
 
 ### 迭代实现（重要）
 
-```c++
+```cpp
 #include <iostream>
 using namespace std;
 
 void dfs_iterative(TreeNode* root) {
     if (root == nullptr) return;
-    
+
     stack<TreeNode*> st;
     st.push(root);              // 根节点入栈
-    
+
     while (!st.empty()) {
         TreeNode* node = st.top();
         st.pop();               // 弹出栈顶
         cout << node->val << " "; // 处理当前节点
-        
+
         if (node->right != nullptr) {  // 先压右（栈反序）
             st.push(node->right);
         }
@@ -413,22 +413,22 @@ void dfs_iterative(TreeNode* root) {
 
 ### 迭代实现
 
-```c++
+```cpp
 #include <queue>
 #include <iostream>
 using namespace std;
 
 void bfs(TreeNode* root) {
     if (root == nullptr) return;
-    
+
     queue<TreeNode*> q;
     q.push(root);               // 根节点入队
-    
+
     while (!q.empty()) {
         TreeNode* node = q.front();
         q.pop();                // 弹出队首
         cout << node->val << " "; // 处理当前节点
-        
+
         if (node->left != nullptr) {   // 先加左
             q.push(node->left);
         }
@@ -521,7 +521,7 @@ BFS（层序）：1 → 2 → 3 → 4 → 5 → 6
 - 表中有配对数 → 直接返回两个下标
 - 表中无配对数 → 把当前数 + 下标存入表
 
-```c++
+```cpp
 #include <vector>
 #include <unordered_map>
 using namespace std;
@@ -552,7 +552,7 @@ public:
 >
 > **输出:** [["bat"],["nat","tan"],["ate","eat","tea"]]
 
-```c++
+```cpp
 class Solution {
 public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
@@ -583,14 +583,14 @@ public:
 
 快指针记录要存储的值，慢指针记录存储的索引
 
-```c++
+```cpp
 class Solution {
 public:
     void moveZeroes(vector<int>& nums) {
         int s = 0;
         for(int i=0; i < nums.size(); i++)
             if(nums[i]) 
-            	swap(nums[s++],nums[i]);
+                swap(nums[s++],nums[i]);
     }
 };
 ```
@@ -611,7 +611,7 @@ public:
 
 ![img](question_11.jpg)
 
-```C++
+```cpp
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -668,7 +668,7 @@ nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0 。
 注意，输出的顺序和三元组的顺序并不重要。
 ```
 
-```C++
+```cpp
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -709,7 +709,7 @@ int main ()
     vector<vector<int>> res;
     while(cin >> x)
         nums.push_back(x);
-    
+
     res = threeSum(nums);
     for(int i = 0; i < res.size(); i++) {
         cout << '[';
@@ -732,7 +732,7 @@ int main ()
 
 给定一个字符串 `s` ，请你找出其中不含有重复字符的 **最长 子串** 的长度。
 
-```c++
+```cpp
 #include <string>
 #include <unordered_set>
 #include <algorithm>
@@ -770,7 +770,7 @@ public:
 >起始索引等于 0 的子串是 "cba", 它是 "abc" 的异位词。
 >起始索引等于 6 的子串是 "bac", 它是 "abc" 的异位词。
 
-```c++
+```cpp
 #include <iostream>
 #include <vector>
 #include <array>
@@ -826,7 +826,7 @@ int main()
 > 输出：2
 > 解释：子数组 [4,3] 是该条件下的长度最小的子数组。
 
-```C++
+```cpp
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -862,10 +862,10 @@ int minSubArrayLen(int target, vector<int>& nums) {
     int left = 0;
     int sum = 0;
     int minlen = INT_MAX;  // INT_MAX 表示 int 类型能存储的最大值 包含头文件<climits>
-    
+
     for(int right = 0; right < nums.size(); right++) {
         sum += nums[right];  // 扩大窗口
-        
+
         while(sum >= target) {  // 收缩窗口
             minlen = min(minlen, right - left + 1);
             sum -= nums[left];
@@ -922,7 +922,7 @@ int main ()
 4. **初始化**
    哈希表先放入 `{0: 1}`，表示前缀和为 0 出现了一次（空数组），这样能正确处理从数组开头开始的子数组。
 
-```c++
+```cpp
 class Solution {
 public:
     int subarraySum(vector<int>& nums, int k) {
@@ -930,7 +930,7 @@ public:
         prefixSum[0] = 1;        // 前缀和为0出现一次（空数组）
         int cur = 0;
         int count = 0;
-        
+
         for (int num : nums) {
             cur += num;
 
@@ -969,13 +969,13 @@ maxSum = max(maxSum, currentSum)
 
 **含义**：对于每个元素，要么**从当前元素重新开始**（放弃之前的子数组），要么**延续之前的子数组**（加上当前元素）。
 
-```c++
+```cpp
 class Solution {
 public:
     int maxSubArray(vector<int>& nums) {
         int currentSum = nums[0];  // 以第一个元素结尾的最大和
         int maxSum = nums[0];      // 全局最大和
-        
+
         for (int i = 1; i < nums.size(); i++) {
             // 要么从当前元素重新开始，要么延续之前的子数组
             currentSum = max(nums[i], currentSum + nums[i]);
@@ -992,7 +992,7 @@ public:
 
 给定一个 `m x n` 的矩阵，如果一个元素为 **0** ，则将其所在行和列的所有元素都设为 **0** 。请使用 **[原地](http://baike.baidu.com/item/原地算法)** 算法。
 
-```c++
+```cpp
 class Solution {
 public:
     void setZeroes(vector<vector<int>>& matrix) {
@@ -1045,7 +1045,7 @@ public:
         if(row_flag == 1)
             for(int i = 0; i < n; i++)
                 matrix[0][i] = 0;
-        
+
         if(column_flag == 1)
             for(int i = 0; i < m; i++)
                 matrix[i][0] = 0;
@@ -1065,7 +1065,7 @@ public:
 2. 循环：先保存`cur`下一个节点`next`，再将`cur.next`指向`pre`，然后`pre`、`cur`同步后移
 3. 循环结束时`cur`为空，`pre`就是反转后的头节点
 
-```c++
+```cpp
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -1114,7 +1114,7 @@ reverseList(1)
   └── 处理节点 1
 ```
 
-```c++
+```cpp
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -1147,7 +1147,7 @@ public:
 
 #### 递归法
 
-```c++
+```cpp
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -1179,7 +1179,7 @@ public:
 
 #### 迭代法
 
-```c++
+```cpp
 #include <iostream>
 #include <stack>
 #include <vector>
@@ -1238,7 +1238,7 @@ public:
 
 > 递归本质就是系统栈，**后进先出**，优先往某个方向深挖，走不通再回溯换方向
 
-```c++
+```cpp
 class Solution {
 public:
     int m = 0;
@@ -1282,38 +1282,38 @@ private:
 
 > 越早发现的格子优先处理，使用队列**先进先出**的特性
 
-```c++
+```cpp
 class Solution {
 public:
     int numIslands(vector<vector<char>>& grid) {
         if (grid.empty() || grid[0].empty()) return 0;
-        
+
         int res = 0;
         int m = grid.size();
         int n = grid[0].size();
-        
+
         // 方向数组：上、下、左、右
         int dx[4] = {-1, 1, 0, 0};
         int dy[4] = {0, 0, -1, 1};
-        
+
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (grid[i][j] == '1') {
                     res++;
-                    
+
                     // BFS：使用队列（先进先出）
                     queue<pair<int, int>> q;
                     q.push({i, j});    // 发现岛屿的第一个格子，入队
                     grid[i][j] = '0';  // 标记已访问
-                    
+
                     while (!q.empty()) {          // ！！！关键判断
                         auto [x, y] = q.front();  // 查看队头元素（但不删除）
                         q.pop();                  // 删除队头元素，表示"已探索完成"
-                        
+
                         for (int k = 0; k < 4; k++) {  // 遍历四个方向
                             int nx = x + dx[k];
                             int ny = y + dy[k];
-                            
+
                             // 检查是否越界且为陆地
                             if (nx >= 0 && nx < m && ny >= 0 && ny < n && grid[nx][ny] == '1') {
                                 grid[nx][ny] = '0';  // 标记已访问
@@ -1347,13 +1347,13 @@ public:
 
 ![img](oranges.png)
 
-```C++
+```cpp
 #include <iostream>
 #include <vector>
 #include <queue>
 
 using namespace std;
-  
+
 int orangesRotting(vector<vector<int>>& grid)
 {
     int minutes = 0;
@@ -1440,7 +1440,7 @@ int main()
 > 输出：false
 > 解释：总共有 2 门课程。学习课程 1 之前，你需要先完成课程 0 ；并且学习课程 0 之前，你还应先完成课程 1 。这是不可能的。
 
-```C++
+```cpp
 /* 课程之间的依赖关系构成一个有向图，如果能完成所有课程，说明图中没有环 
  *
  * 每门课的入度需要被记录，关心入度值的变化。
@@ -1525,7 +1525,7 @@ int main()
 输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 ```
 
-```c++
+```cpp
 class Solution {
 public:
     vector<vector<int>> permute(vector<int>& nums) {
@@ -1533,7 +1533,7 @@ public:
         backtrack(nums, result, 0);
         return result;
     }
-    
+
     /**
      * 回溯函数：通过交换的方式生成全排列
      * @param nums   当前排列数组（会不断修改）
@@ -1552,7 +1552,7 @@ public:
             result.push_back(nums);
             return;
         }
-        
+
         for (int i = start; i < nums.size(); i++) {
             swap(nums[start], nums[i]);         // 做选择
             backtrack(nums, result, start + 1); // 递归
@@ -1562,7 +1562,7 @@ public:
 };
 ```
 
-```c++
+```text
                                     [ ]
                                    start=0
                                     |
@@ -1640,7 +1640,7 @@ public:
 2. 左括号必须以正确的顺序闭合。
 3. 每个右括号都有一个对应的相同类型的左括号。
 
-```C++
+```cpp
 #include <stack>
 class Solution {
 public:
@@ -1687,7 +1687,7 @@ public:
 
 #### 排序  O(N log N）
 
-```C++
+```cpp
 class Solution {
 public:
     int findKthLargest(vector<int>& nums, int k) {
@@ -1707,7 +1707,7 @@ public:
 
   ![image-20260705122343608](image-20260705122343608.png)
 
-```C++
+```cpp
 class Solution {
 public:
     int findKthLargest(vector<int>& nums, int k) {
@@ -1742,18 +1742,18 @@ public:
   - 若堆的大小超过 k，则弹出堆顶元素（即当前堆中最小的元素），确保堆的大小始终不超过 k。
 - **返回结果**：遍历结束后，堆中存储的是整个数组中最大的 k 个元素，堆顶元素即为其中最小值，也就是原数组的第 k 大元素。
 
-```C++
+```cpp
 class Solution {
 public:
     int findKthLargest(vector<int>& nums, int k) {
         // 创建最小堆，priority_queue默认是最大堆
         // 使用greater<int>使其变为最小堆
         priority_queue<int, vector<int>, greater<int>> minHeap;
-        
+
         // 遍历数组
         for (int num : nums) {
             minHeap.push(num);  // 插入元素，时间复杂度O(log k)
-            
+
             // 如果堆的大小超过k，移除堆顶（最小值）
             if (minHeap.size() > k) {
                 minHeap.pop();  // 时间复杂度O(log k)
@@ -1790,7 +1790,7 @@ public:
 > 输出：0
 > 解释：在这种情况下, 没有交易完成, 所以最大利润为 0。
 
-```C++
+```cpp
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
@@ -1822,7 +1822,7 @@ public:
 > 输出：true
 > 解释：可以先跳 1 步，从下标 0 到达下标 1, 然后再从下标 1 跳 3 步到达最后一个下标
 
-```C++
+```cpp
 /* 在每个位置，我们都贪心地选择能跳到最远的位置，不断扩大可达范围 */
 #include <iostream>
 #include <vector>
@@ -1880,7 +1880,7 @@ int main()
 > 解释: 跳到最后一个位置的最小跳跃数是 2。
 >      从下标为 0 跳到下标为 1 的位置，跳 1 步，然后跳 3 步到达数组的最后一个位置。
 
-```C++
+```cpp
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -1936,7 +1936,7 @@ int main()
   - 爬上 n−1 阶楼梯的方法数量。因为再爬1阶就能到第n阶
   - 爬上 n−2 阶楼梯的方法数量，因为再爬2阶就能到第n阶
 
-```C++
+```cpp
 class Solution {
 public:
     int climbStairs(int n) {
@@ -1966,7 +1966,7 @@ public:
 
 ![img](1626927345-DZmfxB-PascalTriangleAnimated2.gif)
 
-```C++
+```cpp
 #include <iostream>
 #include <vector>
 
@@ -2015,7 +2015,7 @@ int main()
 
 给定一个代表每个房屋存放金额的非负整数数组，计算你 **不触动警报装置的情况下** ，一夜之内能够偷窃到的最高金额。
 
-```C++
+```cpp
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -2068,7 +2068,7 @@ int main()
 
 **法一：空间复杂度 *O*(2*n*)**
 
-```C++
+```cpp
 class Solution {
 public:
     int uniquePaths(int m, int n) {
@@ -2086,7 +2086,7 @@ public:
 
 **法二：空间复杂度 *O*(*n*)**
 
-```C++
+```cpp
 class Solution {
 public:
     int uniquePaths(int m, int n) {
@@ -2114,7 +2114,7 @@ public:
 
 ![img](minpath.jpg)
 
-```C++
+```cpp
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -2169,7 +2169,7 @@ int main()
 > 输入：s = "cbbd"
 > 输出："bb"
 
-```C++
+```cpp
 #include <iostream>
 #include <vector>
 
@@ -2177,42 +2177,42 @@ using namespace std;
 
 string longestPalindrome(string s)
 {
-	int maxlen = 1; // 记录最长回文子串的长度
-	int start  = 0; // 记录最长回文子串的起始位置 
-	if (s.length() < 2) return s;
-	// 用 bool 值表示 i-j 是否是回文子串
-	vector<vector<bool>> dp(s.length(), vector<bool>(s.length(), false));
-	for (int i = 0; i < s.length(); i++) {  // 初始化：长度为1的子串
-		dp[i][i] = true;
-	}
-	for (int i = 0; i < s.length() - 1; i++) {  // 初始化：长度为2的子串
-		if (s[i] == s[i + 1]) {
-			dp[i][i + 1] = 1;
-			maxlen = 2;
-			start  = i;
+    int maxlen = 1; // 记录最长回文子串的长度
+    int start  = 0; // 记录最长回文子串的起始位置
+    if (s.length() < 2) return s;
+    // 用 bool 值表示 i-j 是否是回文子串
+    vector<vector<bool>> dp(s.length(), vector<bool>(s.length(), false));
+    for (int i = 0; i < s.length(); i++) {  // 初始化：长度为1的子串
+        dp[i][i] = true;
+    }
+    for (int i = 0; i < s.length() - 1; i++) {  // 初始化：长度为2的子串
+        if (s[i] == s[i + 1]) {
+            dp[i][i + 1] = 1;
+            maxlen = 2;
+            start  = i;
 
-		}
-	}
-	for (int len = 3; len <= s.length(); len++) {        // 按长度递增填表
-		for (int i = 0; i < s.length() - len + 1; i++) {  // 左边界
-			int j = i + len - 1;  // 右边界
-			if (s[i] == s[j] && dp[i + 1][j - 1] == true) {
-				dp[i][j] = true;
-				maxlen = len;
-				start = i;
-			}
-		}
-	}
-	return s.substr(start, maxlen);
+        }
+    }
+    for (int len = 3; len <= s.length(); len++) {        // 按长度递增填表
+        for (int i = 0; i < s.length() - len + 1; i++) {  // 左边界
+            int j = i + len - 1;  // 右边界
+            if (s[i] == s[j] && dp[i + 1][j - 1] == true) {
+                dp[i][j] = true;
+                maxlen = len;
+                start = i;
+            }
+        }
+    }
+    return s.substr(start, maxlen);
 }
 
 int main()
 {
-	string s, res;
-	cin >> s;
-	res = longestPalindrome(s);
-	cout << res;
-	return 0;
+    string s, res;
+    cin >> s;
+    res = longestPalindrome(s);
+    cout << res;
+    return 0;
 }
 ```
 
@@ -2239,7 +2239,7 @@ int main()
 | **自反性** | a ^ a = 0                 | 5 ^ 5 = 0                 |
 | **恒等性** | a ^ 0 = a                 | 5 ^ 0 = 5                 |
 
-```C++
+```cpp
 class Solution {
 public:
     int singleNumber(vector<int>& nums) {

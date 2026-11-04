@@ -32,7 +32,11 @@ const config = {
         { to: '/docs/知识索引', label: '知识索引', position: 'left' },
       ],
     },
-    prism: { theme: prismThemes.github, darkTheme: prismThemes.dracula },
+    prism: {
+      theme: prismThemes.github,
+      darkTheme: prismThemes.dracula,
+      additionalLanguages: ['bash'],
+    },
     footer: {
       style: 'dark',
       links: [

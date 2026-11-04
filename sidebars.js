@@ -46,6 +46,14 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: '开发工具',
+      items: [
+        '开发工具/GDB',
+        '开发工具/Git',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Linux 应用',
       items: [
         'Linux应用/系统调用',
