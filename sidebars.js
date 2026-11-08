@@ -84,7 +84,7 @@ const sidebars = {
         {
           type: 'category',
           label: '中断机制',
-          items: ['Linux驱动/中断机制/中断处理'],
+          items: ['Linux驱动/中断机制/中断机制'],
         },
         {
           type: 'category',
